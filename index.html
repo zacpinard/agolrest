@@ -15,10 +15,11 @@
       "esri/Map", 
       "esri/views/MapView",
       "esri/widgets/BasemapGallery",
-      "esri/widgets/Locate"
+      "esri/widgets/Locate",
+      "esri/widgets/Search"
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -26,7 +27,7 @@
 
       const view = new MapView({
         map: map,
-        center: [-122.41, 37.75], // Longitude, latitude
+        center: [-122.38, 37.75], // Longitude, latitude
         //zoom: 14, // Zoom level
         scale: 80000,
         container: "viewDiv" // Div element
@@ -49,6 +50,16 @@
       // Add the locate widget to the top left corner of the view
       view.ui.add(locateBtn, {
         position: "top-left"
+      });
+
+      const searchWidget = new Search({
+        view: view
+      });
+      // Adds the search widget below other elements in
+      // the top left corner of the view
+      view.ui.add(searchWidget, {
+        position: "top-left",
+        index: 2
       });
 });
   </script>
