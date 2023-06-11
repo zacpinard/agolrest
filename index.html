@@ -16,10 +16,13 @@
       "esri/views/MapView",
       "esri/widgets/BasemapGallery",
       "esri/widgets/Locate",
-      "esri/widgets/Search"
+      "esri/widgets/Search",
+      // Adding modules for graphic and graphic layer
+      "esri/Graphic",  
+      "esri/layers/GraphicsLayer"   
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -32,6 +35,9 @@
         scale: 80000,
         container: "viewDiv" // Div element
       });
+
+      const graphicsLayer = new GraphicsLayer();  
+      map.add(graphicsLayer);
 
       const basemapGallery = new BasemapGallery({
         view: view,
@@ -61,6 +67,29 @@
         position: "top-left",
         index: 0
       });
+
+      const point = { //Create a point  
+        type: "point",  
+        longitude: -122.42903787469034,    //long lat of Sarah's apartment
+        latitude: 37.74658996644984
+      };
+
+      const simpleMarkerSymbol = {  
+        type: "simple-marker",  
+        [0, 0, 139],  // Color of blues rock
+        outline: {  
+        color: [255, 255, 255], // White  
+        width: 1  }  
+      };
+
+      const pointGraphic = new Graphic({  
+        geometry: point,  
+        symbol: simpleMarkerSymbol  
+      });
+
+      graphicsLayer.add(pointGraphic);
+
+
 });
   </script>
 
