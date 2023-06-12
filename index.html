@@ -76,19 +76,32 @@
 
       const simpleMarkerSymbol = {  
         type: "simple-marker",  
-        color: [0, 0, 139],  // Color of blues rock
+        color: [255, 0, 255],  // Color magenta
+        style: "diamond",
         outline: {  
-          color: [255, 255, 255], // White  
+          color: "darkblue", // another way to signify color  
           width: 1  }  
       };
 
       const pointGraphic = new Graphic({  
         geometry: point,  
-        symbol: simpleMarkerSymbol  
+        symbol: simpleMarkerSymbol,
+        //adding the popup stuff
+        attributes: attributes,
+        popupTemplate: popupTemplate
       });
 
       graphicsLayer.add(pointGraphic);
 
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      }
+
+      const attributes = {
+        Name: "Sis",
+        Description: "This is where we visited my sister this summer"
+ }
 
 });
   </script>
