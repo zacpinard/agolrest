@@ -19,10 +19,12 @@
       "esri/widgets/Search",
       // Adding modules for graphic and graphic layer
       "esri/Graphic",  
-      "esri/layers/GraphicsLayer"   
+      "esri/layers/GraphicsLayer",
+      "esri/geometry/Polyline",
+      "esri/geometry/Polygon"
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -88,7 +90,7 @@
         content: "{Description}"
       }
 
-      const attributes = {
+      const pointAttributes = {
         Name: "Sis",
         Description: "This is where we visited my sister this summer"
       }
@@ -97,11 +99,77 @@
         geometry: point,  
         symbol: simpleMarkerSymbol,
         //adding the popup stuff
-        attributes: attributes,
+        attributes: pointAttributes,
         popupTemplate: popupTemplate
       });
 
       graphicsLayer.add(pointGraphic);
+
+      const polyline = { //Create a polyline  
+        type: "polyline",  
+        paths: [[-122.39400689237925, 37.79523199149339],
+                [-122.40556579493142, 37.80684569750752],
+                [-122.41017612175193, 37.808482367096765]],
+      }
+
+      const lineSymbol = {
+          type: "simple-line", // autocasts as SimpleLineSymbol()
+          color: [255, 0, 255],
+          width: 7,
+        };
+
+      const polylineAttributes = {
+        Name: "Embarcadero",
+        Description: "San Francisco's famous bayside street from the Ferry Building to Pier 39"
+      }
+
+      const polylineGraphic = new Graphic({  
+        geometry: polyline,  
+        symbol: lineSymbol,
+        attributes: polylineAttributes,
+        //adding the popup stuff
+        popupTemplate: popupTemplate
+      });
+
+      graphicsLayer.add(polylineGraphic);
+
+      const polygon = { //Create a point  
+        type: "polygon",
+        rings: [[-122.42142637720626, 37.78569674411592],
+                [-122.42065042100492, 37.78197473533937],
+                [-122.41738454462873, 37.78240253369851],
+                [-122.41716805383291, 37.78144706864716],
+                [-122.41384803648405, 37.78183198389394],
+                [-122.41366767453077, 37.78089077112628],
+                [-122.41253097316681, 37.78051992629151],
+                [-122.40908428127395, 37.78321493569005],
+                [-122.40985963433188, 37.78715097456534],
+                [-122.42142637720626, 37.78569674411592]]
+      };
+
+    const polygonSymbol = {
+      type: "simple-fill",
+      color: [255, 0, 255],
+      outline: {
+            // autocasts as new SimpleLineSymbol()
+            color: "darkblue",
+            width: 1
+          }
+    };
+
+    const polygonAttributes = {
+      Name: "Tenderloin",
+      Description: "The poor neighborhood in San Francisco where my sister put on her play"
+    }
+
+    const polygonGraphic = {
+      geometry: polygon,
+      symbol: polygonSymbol,
+      attributes: polygonAttributes,
+      popupTemplate: popupTemplate
+    }
+
+    graphicsLayer.add(polygonGraphic);
 
 });
   </script>
