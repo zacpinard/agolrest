@@ -81,7 +81,17 @@
         outline: {  
           color: "darkblue", // another way to signify color  
           width: 1  }  
-      };
+      };      
+
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      }
+
+      const attributes = {
+        Name: "Sis",
+        Description: "This is where we visited my sister this summer"
+      }
 
       const pointGraphic = new Graphic({  
         geometry: point,  
@@ -92,16 +102,6 @@
       });
 
       graphicsLayer.add(pointGraphic);
-
-      const popupTemplate = {
-        title: "{Name}",
-        content: "{Description}"
-      }
-
-      const attributes = {
-        Name: "Sis",
-        Description: "This is where we visited my sister this summer"
- }
 
 });
   </script>
