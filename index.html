@@ -189,10 +189,11 @@
       
     map.add(usaeduLayer);
 
+    /*
     const popupAirportsusa = {
       "title": "AIRPORT?",
       "content": "<b>This might be an airport<br>"
-    }
+    } */
 
     const airportRenderer = {
         "type": "simple",
@@ -204,15 +205,76 @@
         }
       }
 
+    const helicopterRenderer = {
+      "type": "simple",
+      "symbol": {
+        "type": "picture-marker",
+        "url": "https://zacpinard.github.io/agol/helicopter_icon.png",
+        "width": "18px",
+        "height": "18px"
+      }
+    }
+
+    //const to make the airport labels
+    const airportLabels = {
+      symbol: {
+        type: "text",
+        color: "#FFFFFF",
+        haloColor: "#5E8D74",
+        haloSize: "2px",
+        font: {
+          size: "12px",
+          family: "Noto Sans",
+          style: "italic",
+          weight: "normal"
+        }
+      },
+      labelPlacement: "above-center",
+      labelExpressionInfo: {
+        expression: "$feature.Fac_Name"
+      }
+    };
+
+    //const to make the helicopter labels
+    const helicopterLabels = {
+      symbol: {
+        type: "text",
+        color: "#FFFFFF",
+        haloColor: "#5E8D74",
+        haloSize: "2px",
+        font: {
+          size: "12px",
+          family: "Noto Sans",
+          style: "italic",
+          weight: "normal"
+        }
+      },
+      labelPlacement: "above-center",
+      labelExpressionInfo: {
+        expression: "$feature.Fac_Name"
+      }
+    };
     //adding Const for the airports feature layer
     const usaAirportsLayer = new FeatureLayer({
       url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
-      renderer: airportRenderer //calling the icon
-      //outFields: ["NAME"],
+      renderer: airportRenderer, //calling the icon
+      definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports  
+      labelingInfo: [airportLabels] //adding the labels
+      //outFields: ["NAME"],  
       //popupTemplate: popupAirportsusa
     });
       
     map.add(usaAirportsLayer);
+
+    
+    const usaHelioportsLayer = new FeatureLayer({
+      url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
+      renderer: helicopterRenderer, //calling the helicopter icon
+      definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for helioports 
+      labelingInfo: [helicopterLabels] //adding the labels
+    });
+
+    map.add(usaHelioportsLayer);
 });
   </script>
 
