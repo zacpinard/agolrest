@@ -21,10 +21,12 @@
       "esri/Graphic",  
       "esri/layers/GraphicsLayer",
       "esri/geometry/Polyline",
-      "esri/geometry/Polygon"
+      "esri/geometry/Polygon",
+      //adding in the module for the feature layers
+      "esri/layers/FeatureLayer"
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -170,6 +172,22 @@
     }
 
     graphicsLayer.add(polygonGraphic);
+
+
+    const popupEduusa = {
+      "title": "EDUs",
+      "content": "<b>NAME:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br>"
+    }
+
+    //adding Const for the feature layer
+    const usaeduLayer = new FeatureLayer({
+      url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer/layers",
+      //adding popup
+      outFields: ["NAME","TOT_ENROLL"],
+      popupTemplate: popupEduusa
+    });
+      
+    map.add(usaeduLayer);
 
 });
   </script>
