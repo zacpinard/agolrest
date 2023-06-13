@@ -176,19 +176,43 @@
 
     const popupEduusa = {
       "title": "EDUs",
-      "content": "<b>NAME:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br>"
+      "content": "<b>NAME:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br><b>Total Employed:</b> {TOT_EMP}<br><b>Phone Number:</b> {TELEPHONE}<br>"
     }
 
     //adding Const for the feature layer
     const usaeduLayer = new FeatureLayer({
       url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer/layers",
       //adding popup
-      outFields: ["NAME","TOT_ENROLL"],
+      outFields: ["NAME","TOT_ENROLL","TOT_EMP"],
       popupTemplate: popupEduusa
     });
       
     map.add(usaeduLayer);
 
+    const popupAirportsusa = {
+      "title": "AIRPORT?",
+      "content": "<b>This might be an airport<br>"
+    }
+
+    const airportRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://zacpinard.github.io/agol/outline_local_airport_black_24dp.png",
+          "width": "18px",
+          "height": "18px"
+        }
+      }
+
+    //adding Const for the airports feature layer
+    const usaAirportsLayer = new FeatureLayer({
+      url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
+      renderer: airportRenderer //calling the icon
+      //outFields: ["NAME"],
+      //popupTemplate: popupAirportsusa
+    });
+      
+    map.add(usaAirportsLayer);
 });
   </script>
 
