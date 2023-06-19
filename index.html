@@ -151,161 +151,194 @@
                 [-122.42142637720626, 37.78569674411592]]
       };
 
-    const polygonSymbol = {
-      type: "simple-fill",
-      color: [255, 0, 255],
-      outline: {
-            // autocasts as new SimpleLineSymbol()
-            color: "darkblue",
-            width: 1
+      const polygonSymbol = {
+        type: "simple-fill",
+        color: [255, 0, 255],
+        outline: {
+              // autocasts as new SimpleLineSymbol()
+              color: "darkblue",
+              width: 1
+            }
+      };
+
+      const polygonAttributes = {
+        Name: "Tenderloin",
+        Description: "The poor neighborhood in San Francisco where my sister put on her play"
+      }
+
+      const polygonGraphic = {
+        geometry: polygon,
+        symbol: polygonSymbol,
+        attributes: polygonAttributes,
+        popupTemplate: popupTemplate
+      }
+
+      graphicsLayer.add(polygonGraphic);
+
+
+      const popupEduusa = {
+        "title": "EDUs",
+        "content": "<b>NAME:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br><b>Total Employed:</b> {TOT_EMP}<br><b>Phone Number:</b> {TELEPHONE}<br>"
+      }
+
+      //adding Const for the feature layer
+      const usaeduLayer = new FeatureLayer({
+        url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer/layers",
+        //adding popup
+        outFields: ["NAME","TOT_ENROLL","TOT_EMP"],
+        popupTemplate: popupEduusa
+      });
+        
+      map.add(usaeduLayer);
+
+      /*
+      const popupAirportsusa = {
+        "title": "AIRPORT?",
+        "content": "<b>This might be an airport<br>"
+      } */
+
+      const airportRenderer = {
+          "type": "simple",
+          "symbol": {
+            "type": "picture-marker",
+            "url": "https://zacpinard.github.io/agol/outline_local_airport_black_24dp.png",
+            "width": "18px",
+            "height": "18px"
           }
-    };
+        }
 
-    const polygonAttributes = {
-      Name: "Tenderloin",
-      Description: "The poor neighborhood in San Francisco where my sister put on her play"
-    }
-
-    const polygonGraphic = {
-      geometry: polygon,
-      symbol: polygonSymbol,
-      attributes: polygonAttributes,
-      popupTemplate: popupTemplate
-    }
-
-    graphicsLayer.add(polygonGraphic);
-
-
-    const popupEduusa = {
-      "title": "EDUs",
-      "content": "<b>NAME:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br><b>Total Employed:</b> {TOT_EMP}<br><b>Phone Number:</b> {TELEPHONE}<br>"
-    }
-
-    //adding Const for the feature layer
-    const usaeduLayer = new FeatureLayer({
-      url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer/layers",
-      //adding popup
-      outFields: ["NAME","TOT_ENROLL","TOT_EMP"],
-      popupTemplate: popupEduusa
-    });
-      
-    map.add(usaeduLayer);
-
-    /*
-    const popupAirportsusa = {
-      "title": "AIRPORT?",
-      "content": "<b>This might be an airport<br>"
-    } */
-
-    const airportRenderer = {
+      const helicopterRenderer = {
         "type": "simple",
         "symbol": {
           "type": "picture-marker",
-          "url": "https://zacpinard.github.io/agol/outline_local_airport_black_24dp.png",
+          "url": "https://zacpinard.github.io/agol/helicopter_icon.png",
           "width": "18px",
           "height": "18px"
         }
       }
 
-    const helicopterRenderer = {
-      "type": "simple",
-      "symbol": {
-        "type": "picture-marker",
-        "url": "https://zacpinard.github.io/agol/helicopter_icon.png",
-        "width": "18px",
-        "height": "18px"
+      const myAirportRenderer = {
+          "type": "simple",
+          "symbol": {
+            "type": "picture-marker",
+            "url": "https://zacpinard.github.io/agolrest/orange_airplane.png",
+            "width": "18px",
+            "height": "18px"
+          }
       }
-    }
 
-    //const to make the airport labels
-    const airportLabels = {
-      symbol: {
-        type: "text",
-        color: "#FFFFFF",
-        haloColor: "#5E8D74",
-        haloSize: "2px",
-        font: {
-          size: "12px",
-          family: "Noto Sans",
-          style: "italic",
-          weight: "normal"
+      //const to make the airport labels
+      const myAirportLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.AirportCode"
         }
-      },
-      labelPlacement: "above-center",
-      labelExpressionInfo: {
-        expression: "$feature.Fac_Name"
-      }
-    };
-
-    //const to make the helicopter labels
-    const helicopterLabels = {
-      symbol: {
-        type: "text",
-        color: "#FFFFFF",
-        haloColor: "#5E8D74",
-        haloSize: "2px",
-        font: {
-          size: "12px",
-          family: "Noto Sans",
-          style: "italic",
-          weight: "normal"
-        }
-      },
-      labelPlacement: "above-center",
-      labelExpressionInfo: {
-        expression: "$feature.Fac_Name"
-      }
-    };
-    //adding Const for the airports feature layer
-    const usaAirportsLayer = new FeatureLayer({
-      url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
-      renderer: airportRenderer, //calling the icon
-      definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports  
-      labelingInfo: [airportLabels] //adding the labels
-      //outFields: ["NAME"],  
-      //popupTemplate: popupAirportsusa
-    });
+      };
       
-    map.add(usaAirportsLayer);
+      //const to make the airport labels
+      const airportLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.Fac_Name"
+        }
+      };
 
-    
-    const usaHelioportsLayer = new FeatureLayer({
-      url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
-      renderer: helicopterRenderer, //calling the helicopter icon
-      definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for helioports 
-      labelingInfo: [helicopterLabels] //adding the labels
-    });
+      //const to make the helicopter labels
+      const helicopterLabels = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "italic",
+            weight: "normal"
+          }
+        },
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.Fac_Name"
+        }
+      };
+      //adding Const for the airports feature layer
+      const usaAirportsLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
+        renderer: airportRenderer, //calling the icon
+        definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports  
+        labelingInfo: [airportLabels] //adding the labels
+        //outFields: ["NAME"],  
+        //popupTemplate: popupAirportsusa
+      });
+        
+      map.add(usaAirportsLayer);
 
-    map.add(usaHelioportsLayer);
+      
+      const usaHelioportsLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Lab2_US_Airports/FeatureServer",
+        renderer: helicopterRenderer, //calling the helicopter icon
+        definitionExpression: "Fac_Type = 'HELIPORT'", //adding sql to filter for helioports 
+        labelingInfo: [helicopterLabels] //adding the labels
+      });
 
-    //adding the const for the feature layer
-    const myAirports = new FeatureLayer({
-    url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Zac_Airports/FeatureServer",
-    
-    //adding the popup here
-    outFields: ["AirportCode"],
+      map.add(usaHelioportsLayer);
 
-    });
+      //adding the const for the feature layer
+      const myAirports = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Zac_Airports/FeatureServer",
+      
+        //adding the popup here
+        outFields: ["AirportCode"],
 
-    //adding the feature layer to the map
-    map.add(myAirports);
+        //add renderer
+        renderer: myAirportRenderer  
 
-    // Set the point layer's LayerInfo
-    const pointInfos = {
-    layer: myAirports
-    }
+      });
 
-    // Begin Editor constructor
-    const editor = new Editor({
-    view: view,
-    layerInfos: [pointInfos]
-    }); // End Editor constructor
+      //adding the feature layer to the map
+      map.add(myAirports);
 
-    // Add the widget to the view
-    view.ui.add(editor, "top-right");
+      // Set the point layer's LayerInfo
+      const pointInfos = {
+      layer: myAirports
+      }
+
+      // Begin Editor constructor
+      const editor = new Editor({
+      view: view,
+      layerInfos: [pointInfos]
+      }); // End Editor constructor
+
+      // Add the widget to the view
+      view.ui.add(editor, "top-right");
 
 
-    
+
 });
   </script>
 
