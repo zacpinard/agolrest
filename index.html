@@ -23,10 +23,12 @@
       "esri/geometry/Polyline",
       "esri/geometry/Polygon",
       //adding in the module for the feature layers
-      "esri/layers/FeatureLayer"
+      "esri/layers/FeatureLayer",
+      //adding Editor widget
+      "esri/widgets/Editor"
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, Editor) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -275,6 +277,35 @@
     });
 
     map.add(usaHelioportsLayer);
+
+    //adding the const for the feature layer
+    const myAirports = new FeatureLayer({
+    url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Zac_Airports/FeatureServer",
+    
+    //adding the popup here
+    outFields: ["AirportCode"],
+
+    });
+
+    //adding the feature layer to the map
+    map.add(myAirports);
+
+    // Set the point layer's LayerInfo
+    const pointInfos = {
+    layer: myAirports
+    }
+
+    // Begin Editor constructor
+    const editor = new Editor({
+    view: view,
+    layerInfos: [pointInfos]
+    }); // End Editor constructor
+
+    // Add the widget to the view
+    view.ui.add(editor, "top-right");
+
+
+    
 });
   </script>
 
