@@ -25,10 +25,11 @@
       //adding in the module for the feature layers
       "esri/layers/FeatureLayer",
       //adding Editor widget
-      "esri/widgets/Editor"
+      "esri/widgets/Editor",
+      "esri/widgets/Legend"
     ],
     
-    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, Editor) {   
+    function(esriConfig, Map, MapView, BasemapGallery, Locate, Search, Graphic, GraphicsLayer, Polyline, Polygon, FeatureLayer, Editor, Legend) {   
       esriConfig.apiKey = "AAPKe7597e6aab984f1bb6af80415165d730xY1x15EKarGp3fwbIM7mnMtXYuu_jijQB4r1dPHGf-bIJeS4coIuA1Lfb_eHZrm5";
       const map = new Map({ 
         basemap: "arcgis-midcentury" // Basemap layer service 
@@ -339,9 +340,14 @@
       // Add the widget to the view
       view.ui.add(editor, "top-right");
 
+      let legend = new Legend({
+        view: view
+      });
 
+      view.ui.add(legend, "bottom-left");
 
-});
+    });
+
   </script>
 
   <!-- CSS to make the full-screen map-->
